@@ -1,0 +1,28 @@
+# schema_version: 当前 adoption.yaml 模板版本，后续升级时用于兼容检查。
+schema_version: "1.0"
+
+# base: 当前项目接入的 fenlengtechbase 信息。
+base:
+  # repository: fenlengtechbase 固定远程仓库。
+  repository: "https://github.com/blackdandan/fenlengtechbase.git"
+
+  # branch: fenlengtechbase 固定分支，当前只使用 master。
+  branch: "master"
+
+  # path: 初始化完成后 base 在当前项目中的位置。
+  path: ".fenleng/base"
+
+# entry: 当前项目后续使用的芬棱入口。
+entry:
+  # path: 后续 AI 任务应优先读取的 Entry 文件。
+  path: ".fenleng/base/ai-context/ENTRY.md"
+
+# adopted: 当前项目已经采用的芬棱资产。
+adopted:
+  # workflows: 当前项目采用的 Workflow。初始化后至少包含项目接入 Workflow。
+  workflows:
+    - "workflows/project-adoption/WORKFLOW.md"
+
+  # rules: 当前项目采用的 Rule。初始化后至少包含项目接入初始化规则。
+  rules:
+    - "rules/project-adoption/initialization.md"

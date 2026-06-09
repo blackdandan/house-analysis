@@ -1,0 +1,6 @@
+# schema_version: 当前 overrides.yaml 模板版本，后续升级时用于兼容检查。
+schema_version: "1.0"
+
+# overrides: 当前项目对 fenlengtechbase 的覆盖和例外。
+# 如果没有特殊例外，保持空数组即可。
+overrides: []
