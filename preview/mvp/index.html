@@ -1,0 +1,557 @@
+<!doctype html>
+<!-- 中文注释：静态 MVP preview 入口。必须引用本地 styles.css、mock-data.js 和 app.js。 -->
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>杭州房地产信息可视化系统 - MVP Preview</title>
+    <link rel="stylesheet" href="./styles.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app" class="app-shell">
+      <!-- 渐变发光底色背景 -->
+      <div class="glow-bg">
+        <div class="glow-1"></div>
+        <div class="glow-2"></div>
+      </div>
+
+      <!-- 顶部导航栏 -->
+      <header class="main-header">
+        <div class="brand">
+          <span class="brand-logo">📊</span>
+          <div class="brand-info">
+            <h1>杭州房地产信息可视化系统</h1>
+            <span class="sub-brand">全国大盘 & 杭州微观量价对比平台 [MVP 预览]</span>
+          </div>
+        </div>
+        <nav class="nav-tabs">
+          <button class="nav-btn active" data-tab="macro-dashboard">🌐 全国大盘</button>
+          <button class="nav-btn" data-tab="hz-map-view">🗺️ 杭州地图</button>
+          <button class="nav-btn" data-tab="community-compare">⚖️ 小区对比</button>
+          <button class="nav-btn" data-tab="admin-portal">⚙️ 数据管理后台</button>
+        </nav>
+      </header>
+
+      <!-- 主要内容区域 -->
+      <main class="main-content">
+
+        <!-- TAB 1: 全国大盘 -->
+        <section id="macro-dashboard" class="tab-pane active">
+          <!-- 顶部核心指标卡 -->
+          <div class="indicator-grid">
+            <div class="indicator-card">
+              <div class="ind-header">
+                <span>70城二手房均价环比</span>
+                <span class="ind-icon">🏠</span>
+              </div>
+              <div class="ind-value">99.1%</div>
+              <div class="ind-footer down">环比下跌 0.9% ↓ <span class="ind-date">(2025-12)</span></div>
+            </div>
+            <div class="indicator-card">
+              <div class="ind-header">
+                <span>70城二手房均价同比</span>
+                <span class="ind-icon">📉</span>
+              </div>
+              <div class="ind-value">-3.1%</div>
+              <div class="ind-footer down">同比下跌 3.1% ↓ <span class="ind-date">(2025-12)</span></div>
+            </div>
+            <div class="indicator-card">
+              <div class="ind-header">
+                <span>全国新房年累计销售额</span>
+                <span class="ind-icon">💰</span>
+              </div>
+              <div class="ind-value">11.08 万亿</div>
+              <div class="ind-footer up">同比上涨 0.3% ↑ <span class="ind-date">(2025累计)</span></div>
+            </div>
+            <div class="indicator-card">
+              <div class="ind-header">
+                <span>住户单月新增中长期贷款</span>
+                <span class="ind-icon">🏦</span>
+              </div>
+              <div class="ind-value">3,600 亿</div>
+              <div class="ind-footer up">同比增加 500 亿 ↑ <span class="ind-date">(2025-12)</span></div>
+            </div>
+          </div>
+
+          <!-- 第一排：70城二手房与新房指数对比折线图 -->
+          <div class="chart-row-2">
+            <div class="panel-card chart-card">
+              <div class="card-header">
+                <h3>70城二手住宅平均价格指数趋势</h3>
+                <div class="card-controls">
+                  <button class="btn-sm active" id="btn-70second-ring">环比(以100%为基准)</button>
+                  <button class="btn-sm" id="btn-70second-year">同比(%)</button>
+                </div>
+              </div>
+              <div class="chart-container">
+                <canvas id="chart-70second"></canvas>
+              </div>
+              <div class="chart-tip">💡 数据来源：国家统计局。折线展示70城均值的历史走势，反映市场周期的整体波动状况。</div>
+            </div>
+
+            <div class="panel-card chart-card">
+              <div class="card-header">
+                <h3>70城新建商品住宅平均价格指数趋势</h3>
+                <div class="card-controls">
+                  <button class="btn-sm active" id="btn-70new-ring">环比(以100%为基准)</button>
+                  <button class="btn-sm" id="btn-70new-year">同比(%)</button>
+                </div>
+              </div>
+              <div class="chart-container">
+                <canvas id="chart-70new"></canvas>
+              </div>
+              <div class="chart-tip">💡 新房指数受限价、签约备案延迟等影响，波幅相对二手房指数平缓。</div>
+            </div>
+          </div>
+
+          <!-- 第二排：全国累计销售额与销售面积（双轴） & 单月城市涨跌幅对比 -->
+          <div class="chart-row-2">
+            <div class="panel-card chart-card">
+              <div class="card-header">
+                <h3>全国新建商品房累计销售规模与增速</h3>
+              </div>
+              <div class="chart-container">
+                <canvas id="chart-sales-scale"></canvas>
+              </div>
+              <div class="chart-tip">💡 柱状图表示累计销售面积（万㎡），折线图表示累计销售面积的同比增速（%）。</div>
+            </div>
+
+            <div class="panel-card chart-card">
+              <div class="card-header">
+                <h3>70城主要城市新建住宅价格环比涨跌对比</h3>
+                <div class="card-controls">
+                  <select id="select-city-month" class="select-sm">
+                    <option value="2026-06">2026年06月</option>
+                    <option value="2026-05">2026年05月</option>
+                    <option value="2025-12">2025年12月</option>
+                  </select>
+                </div>
+              </div>
+              <div class="chart-container">
+                <canvas id="chart-cities-month"></canvas>
+              </div>
+              <div class="chart-tip">💡 展示热点一二线城市的单月新房/二手房价格环比涨跌幅。</div>
+            </div>
+          </div>
+
+          <!-- 第三排：供需侧指标 Tab 面板 -->
+          <div class="panel-card tabbed-panel">
+            <div class="panel-tabs-header">
+              <button class="panel-tab-btn active" data-subtab="demand-side">📉 需求端基本面指标</button>
+              <button class="panel-tab-btn" data-subtab="supply-side">🧱 供给端基本面指标</button>
+            </div>
+            
+            <!-- 需求端指标内容 -->
+            <div id="subtab-demand-side" class="subtab-content active">
+              <div class="indicator-group-grid">
+                <div class="grid-chart-col">
+                  <h4>住户部门中长期消费贷款及居民债务收入比走势</h4>
+                  <div class="chart-container-sm">
+                    <canvas id="chart-demand-loans"></canvas>
+                  </div>
+                </div>
+                <div class="grid-chart-col">
+                  <h4>全国主力城市平均租金收益率与房价收入比趋势</h4>
+                  <div class="chart-container-sm">
+                    <canvas id="chart-demand-ratio"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 供给端指标内容 -->
+            <div id="subtab-supply-side" class="subtab-content">
+              <div class="indicator-group-grid">
+                <div class="grid-chart-col">
+                  <h4>全国房企“三道红线”健康度评级分布</h4>
+                  <div class="chart-container-sm flex-center">
+                    <div class="donut-chart-container">
+                      <canvas id="chart-supply-redlines"></canvas>
+                    </div>
+                    <div class="legend-box" id="redlines-legend">
+                      <!-- 动态插入图例 -->
+                    </div>
+                  </div>
+                </div>
+                <div class="grid-chart-col">
+                  <h4>供给端动态：住宅新开工面积与到位资金趋势</h4>
+                  <div class="chart-container-sm">
+                    <canvas id="chart-supply-construction"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 2: 杭州地图 -->
+        <section id="hz-map-view" class="tab-pane">
+          <div class="map-layout">
+            <!-- 左侧筛选控制面板 -->
+            <div class="map-sidebar">
+              <div class="sidebar-section">
+                <h3>🔍 局部精细选盘</h3>
+                <div class="form-group">
+                  <label for="map-search-input">搜索小区名称</label>
+                  <div class="search-box-wrapper">
+                    <input type="text" id="map-search-input" placeholder="输入汉字/拼音，如: 学雅苑...">
+                    <button class="search-btn" id="btn-map-search">搜索</button>
+                  </div>
+                  <div id="map-search-results" class="search-dropdown-results hidden">
+                    <!-- 模糊匹配下拉项 -->
+                  </div>
+                </div>
+              </div>
+
+              <div class="sidebar-section">
+                <h3>🛠️ 数据过滤维度</h3>
+                <div class="form-group">
+                  <label for="map-select-district">行政区域</label>
+                  <select id="map-select-district">
+                    <option value="all">-- 全部行政区 --</option>
+                    <option value="xihu">西湖区</option>
+                    <option value="gongshu">拱墅区</option>
+                    <option value="shangcheng">上城区</option>
+                    <option value="yuhang">余杭区</option>
+                    <option value="binjiang">滨江区</option>
+                    <option value="xiaoshan">萧山区</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="map-select-room">户型大类</label>
+                  <select id="map-select-room">
+                    <option value="all">不限户型</option>
+                    <option value="一居">一居室</option>
+                    <option value="二居">二居室</option>
+                    <option value="三居">三居室</option>
+                    <option value="四居+">四居及以上</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- 搜索空状态/提示面板 -->
+              <div id="map-info-alert" class="alert-box info-alert hidden">
+                <span class="alert-icon">💡</span>
+                <div class="alert-content">
+                  <h5 id="alert-title">未匹配到小区</h5>
+                  <p id="alert-desc">系统已记录该小区的采集请求，每天零点爬虫自动队列将对其进行网签数据补录。</p>
+                </div>
+              </div>
+
+              <!-- 默认提示指引 -->
+              <div class="sidebar-guide">
+                <p>🗺️ <strong>地图使用指南：</strong></p>
+                <ul>
+                  <li>在地图上<strong>点击行政区气泡</strong>可以直接查看区域概况。</li>
+                  <li>使用右下角<strong>“+”控制按钮</strong>放大地图，可以直接穿透展现具体小区打点。</li>
+                  <li>点击小区标点展示右侧卡片，可直接<strong>“加入对比”</strong>。</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- 地图展示区 -->
+            <div class="map-view-wrapper">
+              <!-- SVG 交互地图容器 -->
+              <div class="map-canvas-container" id="hz-svg-map-container">
+                <!-- 动态生成高保真杭州 SVG 地图 -->
+              </div>
+
+              <!-- 地图缩放控制钮 -->
+              <div class="map-controls">
+                <button class="map-ctrl-btn" id="btn-zoom-in" title="放大到小区级">➕ 放大</button>
+                <button class="map-ctrl-btn" id="btn-zoom-out" title="缩小到行政区">➖ 缩小</button>
+                <span class="map-zoom-status" id="zoom-status-text">显示级别: 行政区聚合</span>
+              </div>
+
+              <!-- 右侧详情卡片抽屉 (默认收起) -->
+              <div class="map-detail-drawer hidden" id="map-detail-drawer">
+                <button class="drawer-close-btn" id="btn-close-drawer">✕</button>
+                <div class="drawer-header">
+                  <h3 id="drawer-comm-name">学雅苑</h3>
+                  <span class="tag" id="drawer-comm-tags">西湖区 · 文教</span>
+                </div>
+                <div class="drawer-body">
+                  <div class="drawer-stat-grid">
+                    <div class="d-stat">
+                      <span class="d-label">挂牌成交均价</span>
+                      <span class="d-value-large text-glow" id="drawer-comm-price">72,800 <span class="d-unit">元/㎡</span></span>
+                    </div>
+                    <div class="d-stat">
+                      <span class="d-label">当前挂牌房源</span>
+                      <span class="d-value" id="drawer-comm-listings">45 套</span>
+                    </div>
+                  </div>
+
+                  <div class="drawer-chart-section">
+                    <h4>近一年量价趋势</h4>
+                    <div class="drawer-chart-container">
+                      <canvas id="chart-drawer-trend"></canvas>
+                    </div>
+                  </div>
+
+                  <div class="drawer-actions">
+                    <button class="btn-primary btn-full" id="btn-drawer-add-compare">➕ 加入跨小区对比</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 3: 小区对比 -->
+        <section id="community-compare" class="tab-pane">
+          <!-- 顶部对比控制面板 -->
+          <div class="panel-card compare-selector-card">
+            <div class="compare-selector-grid">
+              <!-- 小区多选槽 -->
+              <div class="compare-slot-multi">
+                <div class="slot-title"><span class="badge purple">对比小区 (2~4个)</span></div>
+                <div class="custom-multiselect" id="compare-multiselect-dropdown">
+                  <div class="multiselect-trigger" id="compare-trigger-btn">
+                    <span id="compare-trigger-text">请勾选对比小区 (已选 0)</span>
+                    <span class="arrow">▼</span>
+                  </div>
+                  <div class="multiselect-dropdown-panel hidden" id="compare-dropdown-panel">
+                    <div class="dropdown-header">
+                      <span>最多选 4 个小区</span>
+                      <button class="btn-clear-select" id="btn-clear-compare-selections">清空</button>
+                    </div>
+                    <div class="dropdown-list" id="compare-options-list">
+                      <!-- 由 JS 动态渲染复选列表 -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 维度过滤器 -->
+              <div class="compare-filters">
+                <div class="filter-item">
+                  <label>对比户型</label>
+                  <select id="compare-select-room" class="select-sm">
+                    <option value="all">全部户型平均</option>
+                    <option value="一居">一居室</option>
+                    <option value="二居">二居室</option>
+                    <option value="三居" selected>三居室</option>
+                    <option value="四居+">四居及以上</option>
+                  </select>
+                </div>
+                <div class="filter-item">
+                  <label>时间范围</label>
+                  <select id="compare-select-time" class="select-sm">
+                    <option value="12">近一年 (12 个月)</option>
+                    <option value="18" selected>近一年半 (18 个月)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 对比图表展示区域 -->
+          <div class="compare-main-container">
+            <!-- 默认空状态 (当未选择对比小区或均选择无数据时显示) -->
+            <div id="compare-empty-state" class="empty-state-view">
+              <span class="empty-icon">⚖️</span>
+              <h3>暂无对比数据</h3>
+              <p>请在上方“对比小区”下拉列表中选择 2 至 4 个不同的杭州小区进行跨维量价、户型对比。</p>
+            </div>
+
+            <!-- 无重合成交空状态 (如无相应户型成交) -->
+            <div id="compare-no-data-state" class="empty-state-view hidden">
+              <span class="empty-icon">🚫</span>
+              <h3>该户型下无成交记录</h3>
+              <p id="no-data-msg">当前筛选时间段或户型大类下，对比的小区不存在重合的实际交易记录。建议更换为“三居室”或延长对比时间范围。</p>
+            </div>
+
+            <!-- 正式对比看板 -->
+            <div id="compare-ready-board" class="compare-dashboard hidden">
+              <!-- 第一排：自主图表类型切换与对比主图表 -->
+              <div class="panel-card chart-card full-width">
+                <div class="card-header">
+                  <h3>量价多维度分析对比图表</h3>
+                  <div class="card-controls">
+                    <button class="btn-sm active" id="btn-chart-type-line">📈 均价走势 (折线)</button>
+                    <button class="btn-sm" id="btn-chart-type-bar">📊 成交套数 (柱状)</button>
+                    <button class="btn-sm" id="btn-chart-type-pie">🍕 户型构成 (饼图/扇形)</button>
+                  </div>
+                </div>
+                <div class="chart-container-large">
+                  <canvas id="chart-compare-main"></canvas>
+                </div>
+              </div>
+
+              <!-- 第二排：同比环比对比数据表 -->
+              <div class="panel-card table-card full-width">
+                <div class="card-header">
+                  <h3>成交量价指标同环比对照表</h3>
+                </div>
+                <div class="table-responsive" id="compare-table-wrapper">
+                  <!-- 由 JS 动态自适应绘制多列数据表格 -->
+                </div>
+                <div class="chart-tip">💡 数据计算基于近18个月标准化网签成交明细底表。同比以2025年同期为对照，环比以最新成交前月为对照。</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 4: 数据管理后台 -->
+        <section id="admin-portal" class="tab-pane">
+          <div class="admin-grid-2">
+            <!-- 左侧：大盘 Excel 文件导入区 -->
+            <div class="panel-card admin-card">
+              <div class="card-header">
+                <h3>🌐 大盘宏观指标一键导入</h3>
+              </div>
+              <div class="admin-body">
+                <p class="admin-desc">国家统计局 70城价格指数、央行居民信贷以及供给/需求侧宏观指标按月或季度更新。下载标准数据模板填报后上传即可更新全国大盘看板。</p>
+                
+                <!-- 上传拖拽区域 -->
+                <div class="upload-dropzone" id="excel-dropzone">
+                  <div class="upload-icon">📤</div>
+                  <div class="upload-text">
+                    <p><strong>点击选择</strong> 或将大盘数据 Excel 拖拽到这里</p>
+                    <span>支持 .xlsx / .xls 格式，最大不超过 5MB</span>
+                  </div>
+                  <input type="file" id="excel-file-input" class="hidden" accept=".xlsx, .xls">
+                </div>
+
+                <!-- 上传进度及校验反馈面板 -->
+                <div id="upload-progress-panel" class="upload-feedback-panel hidden">
+                  <div class="progress-bar-wrapper">
+                    <div class="progress-bar-label">
+                      <span id="upload-filename">macro_indicators_202606.xlsx</span>
+                      <span id="upload-percent">0%</span>
+                    </div>
+                    <div class="progress-track">
+                      <div class="progress-fill" id="upload-progress-fill"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 导入结果状态警报 -->
+                <div id="upload-alert-success" class="alert-box success-alert hidden">
+                  <span class="alert-icon">✅</span>
+                  <div class="alert-content">
+                    <h5>大盘数据导入成功！</h5>
+                    <p>Excel 已成功解析，更新了 2026年6月 的宏观指数，共计刷新 24 项基础字段。全国大盘图表已完成热更新。</p>
+                  </div>
+                </div>
+
+                <div id="upload-alert-error" class="alert-box danger-alert hidden">
+                  <span class="alert-icon">⚠️</span>
+                  <div class="alert-content">
+                    <h5>模板文件结构解析失败！</h5>
+                    <p>未检测到‘三道红线房企评级’指标。请不要更改 Excel 模板的结构，录入数据后重试。</p>
+                  </div>
+                </div>
+
+                <!-- 模板下载按钮 -->
+                <div class="admin-actions-row">
+                  <a class="btn-secondary" id="btn-download-template" href="#">📥 下载最新数据填报模板 (.xlsx)</a>
+                  <button class="btn-primary" id="btn-mock-success-upload">⚡ 模拟成功导入</button>
+                  <button class="btn-danger" id="btn-mock-fail-upload">⚡ 模拟校验失败</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 右侧：杭州小区每日数据抓取状态 -->
+            <div class="panel-card admin-card">
+              <div class="card-header">
+                <h3>🕷️ 杭州小区爬虫每日监控</h3>
+                <span class="status-badge green-dot">● 爬虫运行就绪</span>
+              </div>
+              <div class="admin-body">
+                <div class="crawler-stats-row">
+                  <div class="c-stat">
+                    <span class="c-label">同步小区数</span>
+                    <span class="c-value">345 个</span>
+                  </div>
+                  <div class="c-stat">
+                    <span class="c-label">今日同步交易</span>
+                    <span class="c-value">52 笔</span>
+                  </div>
+                  <div class="c-stat">
+                    <span class="c-label">近7日抓取率</span>
+                    <span class="c-value">99.85%</span>
+                  </div>
+                </div>
+
+                <!-- 抓取日志列表 -->
+                <h4 class="section-title-sm">近 5 日运行流水日志</h4>
+                <div class="log-table-wrapper">
+                  <table class="log-table">
+                    <thead>
+                      <tr>
+                        <th>时间</th>
+                        <th>模块</th>
+                        <th>日志状态</th>
+                        <th>抓取条数</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>06-10 01:25</td>
+                        <td>西湖区/上城区成交爬网</td>
+                        <td><span class="log-tag success">SUCCESS</span></td>
+                        <td>18 笔网签</td>
+                      </tr>
+                      <tr>
+                        <td>06-09 01:30</td>
+                        <td>余杭区/拱墅区成交爬网</td>
+                        <td><span class="log-tag success">SUCCESS</span></td>
+                        <td>24 笔网签</td>
+                      </tr>
+                      <tr>
+                        <td>06-08 01:28</td>
+                        <td>萧山区/滨江区成交爬网</td>
+                        <td><span class="log-tag success">SUCCESS</span></td>
+                        <td>10 笔网签</td>
+                      </tr>
+                      <tr>
+                        <td>06-07 01:15</td>
+                        <td>贝壳杭州二手成交全量扫描</td>
+                        <td><span class="log-tag warning">WARN</span></td>
+                        <td>45 笔成交 (3笔解析失败)</td>
+                      </tr>
+                      <tr>
+                        <td>06-06 01:20</td>
+                        <td>杭州区级价格指数拉取任务</td>
+                        <td><span class="log-tag success">SUCCESS</span></td>
+                        <td>6 个行政区聚合</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- 全局悬浮对比池状态栏 -->
+      <div class="compare-float-badge hidden" id="compare-float-badge">
+        <span class="float-badge-icon">⚖️</span>
+        <span class="float-badge-text">已选中 <strong id="compare-float-count">0</strong> 个小区进行对比</span>
+        <div class="float-badge-actions">
+          <button class="btn-sm btn-white" id="btn-float-go">立刻 PK</button>
+          <button class="btn-icon" id="btn-float-clear" title="清空对比槽">✕</button>
+        </div>
+      </div>
+
+      <!-- 全局消息弹窗组件 -->
+      <div class="notification-toast hidden" id="global-toast">
+        <span id="toast-icon">ℹ️</span>
+        <span id="toast-msg">提示信息</span>
+      </div>
+
+    </div>
+
+    <!-- 挂载本地数据与渲染逻辑 -->
+    <script src="./mock-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
