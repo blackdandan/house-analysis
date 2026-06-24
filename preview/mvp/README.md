@@ -4,8 +4,23 @@
 
 ## How To Open (如何打开)
 
+本项目已完成 Node.js 前端工程化适配，您可以通过以下两种方式之体验预览：
+
+### 方式一：直接双击打开（无环境依赖）
 在 Mac 上，直接双击或使用任意现代浏览器（推荐 Chrome 或 Safari）打开本目录下的：
 [index.html](file:///Users/blackdandan/CodeXWorkSpace/house-analysis/preview/mvp/index.html)
+
+### 方式二：通过本地静态服务打开（推荐）
+1. 确保已安装 [Node.js](https://nodejs.org/) 环境。
+2. 在 `preview/mvp/` 目录下执行依赖安装：
+   ```bash
+   npm install
+   ```
+3. 启动本地 Vite 静态服务器：
+   ```bash
+   npm run dev
+   ```
+4. 终端会输出本地访问地址（如 `http://localhost:5173`），在浏览器中打开该链接即可进行交互式体验。
 
 ## Covered Pages (覆盖的预览页面与交互状态)
 
@@ -28,3 +43,16 @@
 * 本预览 **100% 基于本地假数据运行**，绝不发起任何网络请求。
 * 本预览不需要配置任何本地服务器容器，双击 `index.html` 即可完整体验。
 * 预览中展现的所有地图、折线、柱状、饼图均采用原生 SVG/Canvas 动态绘制，代表视觉和布局意图，不绑定任何特定的技术开发框架。
+
+## Regression Testing (自动化回归测试)
+
+为防止前端 JS 代码在迭代中引入运行时报错（如 TDZ、undefined 异常等），本项目配置了无浏览器依赖的 Node.js 仿真回归测试。
+该脚本通过高精度 Mock 浏览器 DOM/Canvas 环境，执行完整的 DOMContentLoaded 初始化及高阶交互流（如 Tab 切换、图表模式变更、数据对比等）。
+
+在 `preview/mvp/` 目录下执行以下命令运行测试：
+```bash
+npm run test
+# 或者手动执行
+node validate_preview.js
+```
+运行结束后，若看到 `🎉 SUCCESS: All interactive simulations executed without errors!` 字样，则代表代码无异常。

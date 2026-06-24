@@ -1,0 +1,14 @@
+{
+  "name": "hz-house-analysis-preview",
+  "version": "1.0.0",
+  "description": "杭州房地产信息可视化系统静态高保真视觉预览",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "test": "node validate_preview.js"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "private": true
+}
